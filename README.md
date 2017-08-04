@@ -1,4 +1,96 @@
-# Aatest5
+# angular-feature-modules-routed
+
+## How the app was scafollded
+
+ng new angular-feature-modules-routed --routing -style=scss
+
+## How the App was "fleshed out"
+
+```
+ng generate component navigation
+
+ng generate module Home --routing
+manuall add HomeModule to the imports[] of app.module.ts
+
+ng generate component Home
+(should automatically update home.routing-module.ts
+```
+
+Example feature routing (home-routing.module.ts)
+
+```
+import { NgModule }             from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { HomeComponent }        from './home.component';
+
+const routes: Routes = [
+    {path: 'home', component: HomeComponent}
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class HomeRoutingModule { }
+```
+
+Example feature module (home.module.ts)
+
+```
+import { NgModule }             from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { HomeComponent }        from './home.component';
+
+const routes: Routes = [
+    {path: 'home', component: HomeComponent}
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class HomeRoutingModule { }
+
+```
+
+Example `app.module.ts` that imports routable feature modules:
+
+```
+import {BrowserModule}     from '@angular/platform-browser';
+import {NgModule}          from '@angular/core';
+
+import {AppRoutingModule}      from './app-routing.module';
+import {AppComponent}          from './app.component';
+
+import { NavigationComponent } from './navigation/navigation.component';
+
+/* feature modules that perform their own routing */
+import {HomeModule}            from './home/home.module';
+import {AboutModule}           from './about/about.module';
+
+/* Make sure the feature MODULE names, not the feature COMPONENT names, are listed in the imports */
+/* Make sure AppRoutingModule is LAST inside imports array */
+@NgModule({
+    imports: [
+        BrowserModule,
+	    
+        HomeModule,
+        AboutModule,
+        
+        AppRoutingModule
+	],
+    declarations: [
+	    AppComponent,
+	    NavigationComponent
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
+})
+export class AppModule {
+}
+```
+
+## Anular-CLI "stuff"
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.7.
 
